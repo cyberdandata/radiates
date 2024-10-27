@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            height: 600px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #chat-box {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 10px;
+            background-color: #eee;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="chat-box"></div>
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <script>
+   //Simulate messages being added to the chat box
+document.getElementById('sendBtn').addEventListener('click', function () {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value.trim();
+
+    if (message !== "") {
+        // Create a new div element for the message
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.style.padding = '10px';
+        messageDiv.style.marginBottom = '5px';
+        messageDiv.style.borderRadius = '5px';
+        messageDiv.style.backgroundColor = '#e0e0e0';
+
+        // Add the message to the chat box
+        const chatBox = document.getElementById('chat-box');
+        chatBox.appendChild(messageDiv);
+
+        // Clear the input box after sending the message
+        messageInput.value = "";
+
+        // Scroll to the bottom of the chat box
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+});
+</script>
+</body>
+</html>

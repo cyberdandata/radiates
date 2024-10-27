@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Sign-Up</title>
+  <style>
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.chat-container {
+    display: none;
+    margin-top: 20px;
+}
+
+#usersList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-input {
+    margin-top: 20px;
+}
+
+.message-input input {
+    width: calc(100% - 100px);
+    margin-right: 10px;
+}
+
+.message-input button {
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #218838;
+}
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div id="signupModal" class="modal">
+            <div class="modal-content">
+                <h2>Sign Up</h2>
+                <form id="signupForm">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="text" id="location" placeholder="Location" required>
+                    <input type="file" id="profilePhoto" accept="image/*" required>
+                    <button type="button" onclick="signUp()">Sign Up</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="chatContainer" class="chat-container">
+            <h2>Signed In Users</h2>
+            <div id="usersList"></div>
+            <div class="message-input">
+                <input type="text" id="messageText" placeholder="Type your message..." disabled>
+                <button onclick="sendMessage()" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+  // Sign-Up Functionality
+function openSignUp() {
+    document.getElementById('signupModal').style.display = 'flex';
+    document.getElementById('chatContainer').style.display = 'none';
+}
+
+function signUp() {
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const location = document.getElementById('location').value;
+    const profilePhoto = document.getElementById('profilePhoto').files[0];
+
+    if (username && email && location && profilePhoto) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const profileImage = reader.result;
+
+            // Store user data in sessionStorage
+            const userData = {
+                username: username,
+                email: email,
+                location: location,
+                profileImage: profileImage,
+            };
+            const users = JSON.parse(sessionStorage.getItem('users')) || [];
+            users.push(userData);
+            sessionStorage.setItem('users', JSON.stringify(users));
+
+            document.getElementById('signupModal').style.display = 'none';
+            document.getElementById('chatContainer').style.display = 'block';
+            displayUsers(); // Display the users after signing up
+            enableChat();
+        };
+        reader.readAsDataURL(profilePhoto);
+    } else {
+        alert("Please fill all fields and upload a profile photo.");
+    }
+}
+
+// Display All Users Functionality
+function displayUsers() {
+    const usersList = document.getElementById('usersList');
+    usersList.innerHTML = ''; // Clear existing list
+    const users = JSON.parse(sessionStorage.getItem('users')) || [];
+
+    users.forEach(user => {
+        const userElement = document.createElement('div');
+        userElement.classList.add('user');
+        userElement.innerHTML = `
+            <img src="${user.profileImage}" alt="${user.username}'s profile picture">
+            <div class="user-info">
+                <strong>${user.username}</strong>
+                <p>Email: ${user.email}</p>
+                <p>Location: ${user.location}</p>
+            </div>
+        `;
+        usersList.appendChild(userElement);
+    });
+}
+
+// Enable Chat Functionality
+function enableChat() {
+    document.getElementById('messageText').disabled = false;
+    document.querySelector('.message-input button').disabled = false;
+}
+
+// Check if User is Already Signed In
+window.onload = function() {
+    const users = JSON.parse(sessionStorage.getItem('users')) || [];
+    if (users.length > 0) {
+        document.getElementById('signupModal').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'block';
+        displayUsers(); // Display the users on load
+        enableChat();
+    } else {
+        openSignUp();
+    }
+}
+  
+  </script>
+</body>
+</html>

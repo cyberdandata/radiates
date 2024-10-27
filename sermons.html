@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listen to Sermons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .sermon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .sermon-card {
+      background-color: #fff;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .sermon-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    audio {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Audio Sermons</h1>
+
+  <div class="sermon-grid" id="sermonGrid">
+    <!-- Sermon items will be dynamically inserted here -->
+  </div>
+  <script>
+  // Load sermons from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadSermons();
+});
+
+// Load sermons from localStorage and display them
+function loadSermons() {
+  const sermonGrid = document.getElementById('sermonGrid');
+  const sermons = JSON.parse(localStorage.getItem('sermons')) || [];
+  sermonGrid.innerHTML = '';
+
+  sermons.forEach((sermon) => {
+    const sermonCard = document.createElement('div');
+    sermonCard.classList.add('sermon-card');
+    sermonCard.innerHTML = `
+      <div class="sermon-title">${sermon.title}</div>
+      <audio controls>
+        <source src="${sermon.audioDataURL}" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+      <a href="${sermon.audioDataURL}" download="${sermon.title}.mp3">
+        <button>Download</button>
+      </a>
+    `;
+    sermonGrid.appendChild(sermonCard);
+  });
+}
+  </script>

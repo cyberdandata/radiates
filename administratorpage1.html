@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Department</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('fani.jpg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    width: 125%;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 8px;
+}
+
+.header {
+    font-size: 36px;
+    font-weight: bold;
+    background: linear-gradient(to right, #0066ff, #ff3300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.paragraph {
+    color: #0066ff;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #003366; /* Dark blue text */
+
+}
+
+.table-container th, .table-container td {
+    padding: 15px;
+    border: 9px solid #0066cc; /* Medium blue borders */
+    text-align: left;
+     
+}
+
+.table-container th {
+    background-color: #0066cc; /* Medium blue background for headers */
+    color: #ffffff; /* White text for headers */
+}
+
+.upload-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0066ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-box {
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: none;
+}
+
+/* Clock Styling */
+.clock-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, blue, red);
+    border-radius: 40px;
+    padding: 10px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 2.5em;
+    width: 10cm;
+    height:1cm;
+}
+
+.clock {
+    text-align: center;
+}
+
+/* Option Bar Styling */
+.menu-toggle {
+    font-size: 26px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    color: #ffffff;
+    background-color: #007bff;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 999;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu button {
+    display: block;
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #0066ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-menu button:hover {
+    background-color: #0056cc;
+}
+    
+.calculator-container {
+    position: fixed;       /* Fixed positioning to keep it always visible */
+    top: 40px;             /* Distance from the top of the page */
+    right: 50px;  
+     left:500px;    /* Positive value to ensure it stays within the viewport */
+    width: 360px;          /* Width of the calculator */
+    background-color: #337;
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 1000;    
+     
+      height:20.2cm;    /* Ensures it stays above other elements */
+}
+
+.calculator-display {
+    width: 100%;
+    height: 110px;
+    background-color: #444;
+    color: white;
+    text-align: right;
+    font-size: 2em;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.calculator-button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 20px;
+    font-size: 2.0em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.calculator-button:hover {
+    background-color: #777;
+}
+
+.calculator-button.function {
+    background-color: #0066ff;
+}
+
+.calculator-button.equals {
+    background-color: #ff3300;
+    grid-column: span 2;
+}
+
+.calculator-button.clear {
+    background-color: #cc0000;
+    
+}
+   p4{
+
+            position:absolute;
+       top:65px;
+       
+       color:rgba(250,250,250,0.9);
+       background-color: rgba(5,0,250,0.3);
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Finance Department</h1>
+        <p class="paragraph">Please enter the department spending details and submit them&nbspfor review.</p>
+        
+        <form id="dataForm">
+            <table>
+                <tr>
+                    <th>Department</th>
+                    <th>Amount Spent</th>
+                </tr>
+                <tr>
+                    <td>CEO</td>
+                    <td><input type="text" id="ceo_amount" placeholder="Amt to CEO"></td>
+                </tr>
+                <tr>
+                    <td>Finance</td>
+                    <td><input type="text" id="finance_amount" placeholder="Amt to Finance"></td>
+                </tr>
+                <tr>
+                    <td>E&C</td>
+                    <td><input type="text" id="ec_amount" placeholder="Amt to E&C"></td>
+                </tr>
+                <tr>
+                    <td>Ministry</td>
+                    <td><input type="text" id="ministry_amount" placeholder="Amt to Ministry"></td>
+                </tr>
+                <tr>
+                    <td>Administrator</td>
+                    <td><input type="text" id="administrator_amount" placeholder="Amt to Administrator"></td>
+                </tr>
+                <tr>
+                    <td>Mission</td>
+                    <td><input type="text" id="mission_amount" placeholder="Amt to Mission"></td>
+                </tr>
+            </table>
+
+            <div>
+                <label for="release-date">Release Date:</label>
+                <input type="date" id="release-date">
+            </div>
+
+            <div>
+                <label for="comment">Comment:</label>
+                <textarea id="comment" class="comment-box" placeholder="Type your comment here..."></textarea>
+            </div>
+
+            <!-- Expense input box -->
+            <div>
+                <label for="expense">Expenses (Material Bought):</label>
+                <textarea id="expense" class="comment-box" placeholder="Enter the utilisation of money..."></textarea>
+            </div>
+
+            <div>
+                <label for="imageUpload">Upload Image:</label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+
+            <button class="upload-button" type="submit">Upload</button>
+        </form>
+
+        <div class="table-container">
+            <h2>Stored Records</h2>
+            <table id="recordsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>CEO</th>
+                        <th>Finance</th>
+                        <th>E&C</th>
+                        <th>Ministry</th>
+                        <th>Administrator</th>
+                        <th>Mission</th>
+                        <th>Comment</th>
+                        <th>Expenses</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Records will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <button id="download-button" class="upload-button">Download Records as HTML</button>
+        <button id="delete-table-button" class="upload-button" style="background-color: red;">Erase Table</button>
+    </div>
+
+    <div class="clock-container">
+        <div id="clock" class="clock"></div>
+    </div>
+    
+    <div class="menu-toggle">&#9776;</div>
+    <div class="dropdown-menu">
+        <button id="view-ceo">Manage CEO</button>
+        <button id="view-admin">Manage Admin</button>
+        <button id="view-ec">Manage E&C</button>
+        <button id="view-mission">Manage Mission</button>
+        <button id="view-ministry">Manage Ministry</button>
+    </div>
+
+    <div class="calculator-container">
+    <input type="text" id="calc-display" class="calculator-display" readonly>
+    <div class="calculator-buttons">
+        <button class="calculator-button" onclick="calcInput('7')">7</button>
+        <button class="calculator-button" onclick="calcInput('8')">8</button>
+        <button class="calculator-button" onclick="calcInput('9')">9</button>
+        <button class="calculator-button function" onclick="calcInput('/')">/</button>
+
+        <button class="calculator-button" onclick="calcInput('4')">4</button>
+        <button class="calculator-button" onclick="calcInput('5')">5</button>
+        <button class="calculator-button" onclick="calcInput('6')">6</button>
+        <button class="calculator-button function" onclick="calcInput('*')">*</button>
+
+        <button class="calculator-button" onclick="calcInput('1')">1</button>
+        <button class="calculator-button" onclick="calcInput('2')">2</button>
+        <button class="calculator-button" onclick="calcInput('3')">3</button>
+        <button class="calculator-button function" onclick="calcInput('-')">-</button>
+
+        <button class="calculator-button" onclick="calcInput('0')">0</button>
+        <button class="calculator-button" onclick="calcInput('.')">.</button>
+        <button class="calculator-button equals" onclick="calculate()">=</button>
+        <button class="calculator-button function" onclick="calcInput('+')">+</button>
+
+        <button class="calculator-button function" onclick="calcInput('(')">(</button>
+        <button class="calculator-button function" onclick="calcInput(')')">)</button>
+        <button class="calculator-button function" onclick="calcInput('^')">^</button>
+        <button class="calculator-button function" onclick="calcInput('sqrt(')">√</button>
+
+        <button class="calculator-button function" onclick="calcInput('sin(')">sin</button>
+        <button class="calculator-button function" onclick="calcInput('cos(')">cos</button>
+        <button class="calculator-button function" onclick="calcInput('tan(')">tan</button>
+        <button class="calculator-button clear" onclick="clearDisplay()">C</button>
+    </div>
+</div>
+    <p4 class="name."> ©Developed by Cyberdandata</p4>
+    <script>
+    // Function to handle form submission and store data
+document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Get the values from the form fields
+    const ceo_amount = document.getElementById('ceo_amount').value;
+    const finance_amount = document.getElementById('finance_amount').value;
+    const ec_amount = document.getElementById('ec_amount').value;
+    const ministry_amount = document.getElementById('ministry_amount').value;
+    const administrator_amount = document.getElementById('administrator_amount').value;
+    const mission_amount = document.getElementById('mission_amount').value;
+    const releaseDate = document.getElementById('release-date').value;
+    const comment = document.getElementById('comment').value;
+    const expense = document.getElementById('expense').value;  // Capture expense input
+
+    const imageUpload = document.getElementById('imageUpload');
+    let imageSrc = "";
+
+    if (imageUpload.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imageSrc = e.target.result;
+
+            // Create a record object once image is loaded
+            const record = {
+                date: releaseDate,
+                ceo: ceo_amount,
+                finance: finance_amount,
+                ec: ec_amount,
+                ministry: ministry_amount,
+                administrator: administrator_amount,
+                mission: mission_amount,
+                comment: comment,
+                expense: expense,  // Include expense in the record
+                imageSrc: imageSrc
+            };
+
+            storeAndRedirect(record);
+        };
+        reader.readAsDataURL(imageUpload.files[0]);
+    } else {
+        // Create a record object without an image
+        const record = {
+            date: releaseDate,
+            ceo: ceo_amount,
+            finance: finance_amount,
+            ec: ec_amount,
+            ministry: ministry_amount,
+            administrator: administrator_amount,
+            mission: mission_amount,
+            comment: comment,
+            expense: expense,  // Include expense in the record
+            imageSrc: "N/A"
+        };
+
+        storeAndRedirect(record);
+    }
+});
+
+// Function to store the record and redirect to the display page
+function storeAndRedirect(record) {
+    let storedRecords = JSON.parse(localStorage.getItem('storedRecords')) || [];
+    storedRecords.push(record);
+    localStorage.setItem('storedRecords', JSON.stringify(storedRecords));
+
+    // Send the data to another page via sessionStorage
+    sessionStorage.setItem('storedRecords', JSON.stringify(storedRecords));
+    window.location.href = 'display.html'; // Redirect to the display page
+
+    addRecordToTable(record);
+    document.getElementById('dataForm').reset(); // Clear the form fields after submission
+}
+
+// Function to add a record to the table
+function addRecordToTable(record) {
+    const tableBody = document.querySelector('#recordsTable tbody');
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+        <td>${record.date}</td>
+        <td>${record.ceo}</td>
+        <td>${record.finance}</td>
+        <td>${record.ec}</td>
+        <td>${record.ministry}</td>
+        <td>${record.administrator}</td>
+        <td>${record.mission}</td>
+        <td>${record.comment}</td>
+        <td>${record.expense}</td>
+        <td>${record.imageSrc === "N/A" ? "N/A" : `<img src="${record.imageSrc}" alt="Uploaded Image" width="50">`}</td>
+    `;
+
+    tableBody.appendChild(row);
+}
+
+// Function to load records from localStorage and display them in the table
+function loadRecords() {
+    const storedRecords = JSON.parse(localStorage.getItem('storedRecords')) || [];
+    storedRecords.forEach(record => {
+        addRecordToTable(record);
+    });
+}
+
+// Initialize the clock
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    document.getElementById('clock').textContent = timeString;
+}
+
+setInterval(updateClock, 1000);
+updateClock(); // Initialize the clock immediately
+
+// Download the records as an HTML file
+document.getElementById('download-button').addEventListener('click', function() {
+    const table = document.getElementById('recordsTable').outerHTML;
+    const htmlContent = `
+        <html>
+        <head>
+            <title>Stored Records</title>
+            <style>
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { padding: 15px; border: 1px solid #ddd; text-align: left; }
+            </style>
+        </head>
+        <body>
+            <h2>Stored Records</h2>
+            ${table}
+        </body>
+        </html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'records.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});
+
+// Clear the table from the interface
+document.getElementById('delete-table-button').addEventListener('click', function() {
+    const tableBody = document.querySelector('#recordsTable tbody');
+    tableBody.innerHTML = ''; // Clear the table body (visual content)
+});
+
+// Dropdown menu toggle
+document.addEventListener("DOMContentLoaded", function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    // Toggle dropdown menu on click
+    menuToggle.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // General navigation function
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+
+    // Navigation to storage sites using navigateTo function
+    document.getElementById('view-ceo').addEventListener('click', function() {
+        navigateTo('receiptceo.html');
+    });
+
+    document.getElementById('view-admin').addEventListener('click', function() {
+        navigateTo('admindisplay.html');
+    });
+
+    document.getElementById('view-ec').addEventListener('click', function() {
+        navigateTo('campdisplay.html');
+    });
+
+    document.getElementById('view-mission').addEventListener('click', function() {
+        navigateTo('missiondisplay.html');
+    });
+
+    document.getElementById('view-ministry').addEventListener('click', function() {
+        navigateTo('ministrydisplay.html');
+    });
+});
+
+// Load records on page load
+window.onload = loadRecords;
+
+// Calculator Functions
+function calcInput(value) {
+    document.getElementById('calc-display').value += value;
+}
+
+// Function to clear the calculator display
+function clearDisplay() {
+    document.getElementById('calc-display').value = '';
+}
+
+// Function to calculate the result in the calculator
+function calculate() {
+    let expression = document.getElementById('calc-display').value;
+
+    // Replace power operator (^) with JS exponentiation operator (**)
+    expression = expression.replace('^', '**');
+
+    try {
+        // Evaluate the expression and display the result
+        const result = eval(expression);
+        document.getElementById('calc-display').value = result;
+    } catch (error) {
+        document.getElementById('calc-display').value = 'Error';
+    }
+}
+
+// Function to calculate the square root
+function calcSqrt() {
+    let expression = document.getElementById('calc-display').value;
+
+    try {
+        // Calculate the square root of the expression
+        const result = Math.sqrt(eval(expression));
+        document.getElementById('calc-display').value = result;
+    } catch (error) {
+        document.getElementById('calc-display').value = 'Error';
+    }
+}
+
+// Functions for trigonometric operations
+function calcSin() {
+    let expression = document.getElementById('calc-display').value;
+
+    try {
+        // Calculate the sine of the expression (in radians)
+        const result = Math.sin(eval(expression));
+        document.getElementById('calc-display').value = result;
+    } catch (error) {
+        document.getElementById('calc-display').value = 'Error';
+    }
+}
+
+function calcCos() {
+    let expression = document.getElementById('calc-display').value;
+
+    try {
+        // Calculate the cosine of the expression (in radians)
+        const result = Math.cos(eval(expression));
+        document.getElementById('calc-display').value = result;
+    } catch (error) {
+        document.getElementById('calc-display').value = 'Error';
+    }
+}
+
+function calcTan() {
+    let expression = document.getElementById('calc-display').value;
+
+    try {
+        // Calculate the tangent of the expression (in radians)
+        const result = Math.tan(eval(expression));
+        document.getElementById('calc-display').value = result;
+    } catch (error) {
+        document.getElementById('calc-display').value = 'Error';
+    }
+}
+    
+    
+    
+// JavaScript for handling the expenses toggle and form submission
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener to toggle the expenses section
+    const expenseToggleBtn = document.getElementById('expense-toggle');
+    const expenseContainer = document.getElementById('expense-container');
+
+    expenseToggleBtn.addEventListener('click', function() {
+        if (expenseContainer.style.display === 'none' || expenseContainer.style.display === '') {
+            expenseContainer.style.display = 'block';
+        } else {
+            expenseContainer.style.display = 'none';
+        }
+    });
+
+    // Function to handle form submission and include expenses
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get the values from the form fields
+        const ceo_amount = document.getElementById('ceo_amount').value;
+        const finance_amount = document.getElementById('finance_amount').value;
+        const ec_amount = document.getElementById('ec_amount').value;
+        const ministry_amount = document.getElementById('ministry_amount').value;
+        const administrator_amount = document.getElementById('administrator_amount').value;
+        const mission_amount = document.getElementById('mission_amount').value;
+        const releaseDate = document.getElementById('release-date').value;
+        const comment = document.getElementById('comment').value;
+        const expense = document.getElementById('expense').value;  // Capture expense input
+
+        const imageUpload = document.getElementById('imageUpload');
+        let imageSrc = "";
+
+        if (imageUpload.files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageSrc = e.target.result;
+
+                // Create a record object once image is loaded
+                const record = {
+                    date: releaseDate,
+                    ceo: ceo_amount,
+                    finance: finance_amount,
+                    ec: ec_amount,
+                    ministry: ministry_amount,
+                    administrator: administrator_amount,
+                    mission: mission_amount,
+                    comment: comment,
+                    expense: expense,  // Include expense in the record
+                    imageSrc: imageSrc
+                };
+
+                storeAndRedirect(record);
+            };
+            reader.readAsDataURL(imageUpload.files[0]);
+        } else {
+            // Create a record object without an image
+            const record = {
+                date: releaseDate,
+                ceo: ceo_amount,
+                finance: finance_amount,
+                ec: ec_amount,
+                ministry: ministry_amount,
+                administrator: administrator_amount,
+                mission: mission_amount,
+                comment: comment,
+                expense: expense,  // Include expense in the record
+                imageSrc: "N/A"
+            };
+
+            storeAndRedirect(record);
+        }
+    });
+
+    // Function to store the record and redirect to the display page
+    function storeAndRedirect(record) {
+        let storedRecords = JSON.parse(localStorage.getItem('storedRecords')) || [];
+        storedRecords.push(record);
+        localStorage.setItem('storedRecords', JSON.stringify(storedRecords));
+
+        // Send the data to another page via sessionStorage
+        sessionStorage.setItem('storedRecords', JSON.stringify(storedRecords));
+        window.location.href = 'display.html'; // Redirect to the display page
+    }
+
+    // Initialize the clock
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('clock').textContent = timeString;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // Initialize the clock immediately
+
+    // Toggle dropdown menu
+    const menuToggle = document.querySelector('.menu-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    menuToggle.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Navigation to storage sites
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+
+    document.getElementById('view-ceo').addEventListener('click', function() {
+        navigateTo('receiptceo.html');
+    });
+
+    document.getElementById('view-finance').addEventListener('click', function() {
+        navigateTo('financedisplay.html');
+    });
+
+    document.getElementById('view-ec').addEventListener('click', function() {
+        navigateTo('campdisplay.html');
+    });
+
+    document.getElementById('view-mission').addEventListener('click', function() {
+        navigateTo('missiondisplay.html');
+    });
+
+    document.getElementById('view-ministry').addEventListener('click', function() {
+        navigateTo('ministrydisplay.html');
+    });
+
+    // Calculator Functions
+    function calcInput(value) {
+        document.getElementById('calc-display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('calc-display').value = '';
+    }
+
+    function calculate() {
+        let expression = document.getElementById('calc-display').value;
+
+        // Replace power operator (^) with JS exponentiation operator (**)
+        expression = expression.replace('^', '**');
+
+        try {
+            const result = eval(expression);
+            document.getElementById('calc-display').value = result;
+        } catch (error) {
+            document.getElementById('calc-display').value = 'Error';
+        }
+    }
+
+    // Trigonometric operations
+    function calcSqrt() {
+        let expression = document.getElementById('calc-display').value;
+
+        try {
+            const result = Math.sqrt(eval(expression));
+            document.getElementById('calc-display').value = result;
+        } catch (error) {
+            document.getElementById('calc-display').value = 'Error';
+        }
+    }
+
+    function calcSin() {
+        let expression = document.getElementById('calc-display').value;
+
+        try {
+            const result = Math.sin(eval(expression));
+            document.getElementById('calc-display').value = result;
+        } catch (error) {
+            document.getElementById('calc-display').value = 'Error';
+        }
+    }
+
+    function calcCos() {
+        let expression = document.getElementById('calc-display').value;
+
+        try {
+            const result = Math.cos(eval(expression));
+            document.getElementById('calc-display').value = result;
+        } catch (error) {
+            document.getElementById('calc-display').value = 'Error';
+        }
+    }
+
+    function calcTan() {
+        let expression = document.getElementById('calc-display').value;
+
+        try {
+            const result = Math.tan(eval(expression));
+            document.getElementById('calc-display').value = result;
+        } catch (error) {
+            document.getElementById('calc-display').value = 'Error';
+        }
+    }
+});
+
+// Inline CSS styling for the expense toggle button and container
+const style = `
+#expense-toggle {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+#expense-container {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+`;
+
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = style;
+document.head.appendChild(styleSheet);
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Department</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background: #333;
+            color: white;
+        }
+
+        /* Background Video */
+        .background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(50%);
+        }
+
+        /* Top Header */
+        .header {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to right, blue, yellow, red);
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Transparent Container */
+        .transparent-container {
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .form-group input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: linear-gradient(to right, blue, red);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .upload-label i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        /* Upload Button */
+        .upload-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .upload-button:hover {
+            background-color: darkgreen;
+        }
+
+        /* Clock */
+        .clock {
+            position: fixed;
+            top: 01px;
+            right: 16px;
+            color: white;
+            background: linear-gradient(to right, blue, red);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Three-line Option Bar */
+        .menu-icon {
+            position: fixed;
+            top: 20px;
+            right: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .dropdown {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            background-color: #333;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="star.mp4" type="video/mp4">
+    </video>
+
+    <div class="header">Admin Department</div>
+
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <div class="dropdown" id="dropdown">
+        <a href="receiptceo.html">View CEO</a>
+        <a href="display.html">View Finance</a>
+        <a href="campdisplay.html">View E & C</a>
+        <a href="missiondisplay.html">View Mission</a>
+        <a href="ministrydisplay.html">View Ministry</a>
+    </div>
+
+    <div class="transparent-container">
+        <form id="dataForm">
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea id="comment" placeholder="Enter your comment here"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="comment-date">Date:</label>
+                <input type="date" id="comment-date">
+            </div>
+
+            <div class="form-group">
+                <label for="transactions">Copied Transactions:</label>
+                <textarea id="transactions" placeholder="Paste transactions here"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="file-upload" class="upload-label">
+                    <i class="camera-icon">📷</i>
+                    <span>Any other graphical information</span>
+                </label>
+                <input id="file-upload" type="file" accept="image/*">
+            </div>
+
+            <button type="submit" class="upload-button">Upload</button>
+        </form>
+    </div>
+
+    <div class="clock" id="clock"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const timeString = `${hours}:${minutes}:${seconds}`;
+                document.getElementById('clock').textContent = timeString;
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Toggle dropdown menu
+            const menuIcon = document.getElementById('menu-icon');
+            const dropdown = document.getElementById('dropdown');
+
+            menuIcon.addEventListener('click', function () {
+                if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            document.getElementById('dataForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const date = document.getElementById('comment-date').value;
+                const comment = document.getElementById('comment').value;
+                const transactions = document.getElementById('transactions').value;
+                const imageInput = document.getElementById('file-upload');
+
+                let imageSrc = "N/A";
+                if (imageInput.files.length > 0) {
+                    const fileReader = new FileReader();
+                    fileReader.onload = function (event) {
+                        imageSrc = event.target.result;
+                        storeDepartmentData({ date, comment, transactions, imageSrc });
+                    };
+                    fileReader.readAsDataURL(imageInput.files[0]);
+                } else {
+                    storeDepartmentData({ date, comment, transactions, imageSrc });
+                }
+            });
+
+            function storeDepartmentData(data) {
+                if (confirm("Are you sure you want to submit this data?")) {
+                    const records = JSON.parse(localStorage.getItem('fainance-page DepartmentRecords')) || [];
+                    records.push(data);
+                    localStorage.setItem('fainance-page DepartmentRecords', JSON.stringify(records));
+
+                    // Redirect to the receipt page
+                    window.location.href = 'financedisplay.html';
+                }
+            }
+        });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+    // Update Clock Function
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('clock').textContent = timeString;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Plus Sign Toggle for Expenses
+    const plusSign = document.createElement('span');
+    plusSign.textContent = '+';
+    plusSign.style.cursor = 'pointer';
+    plusSign.style.color = '#007bff';
+    plusSign.style.fontSize = '2.5rem';
+    plusSign.style.marginLeft = '10px';
+
+    const expenseContainer = document.createElement('div');
+    expenseContainer.style.display = 'none'; // Initially hidden
+    expenseContainer.innerHTML = `
+        <label for="expenses">Expenses/Spending:</label>
+        <textarea id="expenses" placeholder="Enter where money was spent here"></textarea>
+    `;
+    expenseContainer.style.marginTop = '10px';
+
+    document.querySelector('.form-group textarea#comment').parentElement.appendChild(plusSign);
+    document.querySelector('.form-group textarea#comment').parentElement.appendChild(expenseContainer);
+
+    plusSign.addEventListener('click', function () {
+        if (expenseContainer.style.display === 'none') {
+            expenseContainer.style.display = 'block';
+        } else {
+            expenseContainer.style.display = 'none';
+        }
+    });
+
+    // Form Submission Handling
+    document.getElementById('dataForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const date = document.getElementById('comment-date').value;
+        const comment = document.getElementById('comment').value;
+        const transactions = document.getElementById('transactions').value;
+        const expenses = document.getElementById('expenses').value || "N/A"; // Default to "N/A" if not provided
+        const imageInput = document.getElementById('file-upload');
+
+        let imageSrc = "N/A";
+        if (imageInput.files.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                imageSrc = event.target.result;
+                storeDepartmentData({ date, comment, transactions, expenses, imageSrc });
+            };
+            fileReader.readAsDataURL(imageInput.files[0]);
+        } else {
+            storeDepartmentData({ date, comment, transactions, expenses, imageSrc });
+        }
+    });
+
+    // Store Department Data
+    function storeDepartmentData(data) {
+        if (confirm("Are you sure you want to submit this data?")) {
+            const records = JSON.parse(localStorage.getItem('admin DepartmentRecords')) || [];
+            records.push(data);
+            localStorage.setItem('admin DepartmentRecords', JSON.stringify(records));
+            
+            // Redirect to the receipt page
+            window.location.href = 'admindisplay.html';
+        }
+    }
+});
+
+    </script>
+</body>
+</html>

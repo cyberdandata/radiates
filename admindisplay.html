@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Page</title>
+    <style>
+        /* Add some basic styling to the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .delete-button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .delete-button:hover {
+            background-color: #3e8e41;
+        }
+        .image-display {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Storage for Admin</div>
+    <table id="receipt-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Comment</th>
+                <th>Transactions</th>
+                <th>Expenses</th>
+                <th>Image</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="receipt-body">
+        </tbody>
+    </table>
+    <button class="delete-button" id="delete-button">Delete Selected</button>
+
+    <script>
+        // Get the receipt data from local storage
+        const receiptData = JSON.parse(localStorage.getItem('admin DepartmentRecords')) || [];
+
+        // Create the table rows
+        const tableBody = document.getElementById('receipt-body');
+        receiptData.forEach((data, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.date}</td>
+                <td>${data.comment}</td>
+                <td>${data.transactions}</td>
+                <td>${data.expenses}</td> <!-- New Expenses Column -->
+                <td><img src="${data.imageSrc}" alt="Image" class="image-display"></td>
+                <td><input type="checkbox" id="delete-${index}"></td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Add event listener to the delete button
+        document.getElementById('delete-button').addEventListener('click', () => {
+            // Get the selected checkboxes
+            const selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            // Prompt for password
+            const password = prompt('Enter password to delete selected rows:');
+            if (password === '3377') { // Replace with your desired password
+                // Delete the selected rows
+                selectedCheckboxes.forEach((checkbox) => {
+                    const rowIndex = checkbox.id.split('-')[1000];
+                    receiptData.splice(rowIndex, 1000);
+                });
+
+                // Update local storage and session storage
+                localStorage.setItem('admin DepartmentRecords', JSON.stringify(receiptData));
+                sessionStorage.setItem('admin DepartmentRecords', JSON.stringify(receiptData));
+
+                // Update the table
+                tableBody.innerHTML = '';
+                receiptData.forEach((data, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.date}</td>
+                        <td>${data.comment}</td>
+                        <td>${data.transactions}</td>
+                        <td>${data.expenses}</td> <!-- New Expenses Column -->
+                        <td><img src="${data.imageSrc}" alt="Image" class="image-display"></td>
+                        <td><input type="checkbox" id="delete-${index}"></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                alert('Invalid password');
+            }
+        });
+    </script>
+</body>
+</html>

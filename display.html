@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Display Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .container {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #search-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    
+    
+    
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stored Records</h1>
+
+        <!-- Search Bar -->
+        <input type="text" id="search-input" placeholder="Search records...">
+
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>CEO Amount</th>
+                    <th>Finance Amount</th>
+                    <th>E&C Amount</th>
+                    <th>Ministry Amount</th>
+                    <th>Administrator Amount</th>
+                    <th>Mission Amount</th>
+                    <th>Comment</th>
+                    <th>Expense</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Table rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+        <button class="button" id="delete-button">Delete Selected Row</button>
+           </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const tableBody = document.getElementById('table-body');
+
+            // Function to load and display stored records
+            function loadRecords(recordsToDisplay = null) {
+                const records = recordsToDisplay || JSON.parse(localStorage.getItem('storedRecords')) || [];
+
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                records.forEach((record, index) => {
+                    const row = document.createElement('tr');
+                    row.dataset.index = index;
+
+                    row.innerHTML = `
+                        <td>${record.date}</td>
+                        <td>${record.ceo}</td>
+                        <td>${record.finance}</td>
+                        <td>${record.ec}</td>
+                        <td>${record.ministry}</td>
+                        <td>${record.administrator}</td>
+                        <td>${record.mission}</td>
+                        <td>${record.comment}</td>
+                        <td>${record.expense}</td>
+                        <td><img src="${record.imageSrc}" alt="Image" width="100"></td>
+                        <td><input type="radio" name="row-selector" value="${index}"></td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Load records when the page is loaded
+            loadRecords();
+
+            // Handle delete button click
+            document.getElementById('delete-button').addEventListener('click', function() {
+                const selectedRadio = document.querySelector('input[name="row-selector"]:checked');
+                if (selectedRadio) {
+                    const index = selectedRadio.value;
+                    if (confirm('Are you sure you want to delete this row?')) {
+                        const records = JSON.parse(localStorage.getItem('storedRecords')) || [];
+                        records.splice(index, 1); // Remove selected record
+                        localStorage.setItem('storedRecords', JSON.stringify(records)); // Update localStorage
+                        loadRecords(); // Reload records to reflect changes
+                    }
+                } else {
+                    alert('Please select a row to delete.');
+                }
+            });
+
+            // Search function
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase();
+                const allRecords = JSON.parse(localStorage.getItem('storedRecords')) || [];
+
+                const filteredRecords = allRecords.filter(record => 
+                    record.date.toLowerCase().includes(query) ||
+                    record.ceo.toLowerCase().includes(query) ||
+                    record.finance.toLowerCase().includes(query) ||
+                    record.ec.toLowerCase().includes(query) ||
+                    record.ministry.toLowerCase().includes(query) ||
+                    record.administrator.toLowerCase().includes(query) ||
+                    record.mission.toLowerCase().includes(query) ||
+                    record.comment.toLowerCase().includes(query) ||
+                    record.expense.toLowerCase().includes(query)
+                );
+
+                loadRecords(filteredRecords);
+            });
+        });
+    
+    
+    
+                
+    </script>
+</body>
+</html>

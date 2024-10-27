@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Manage Weekly Agendum</title>
+  <style>
+  /* General styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+h1, h2 {
+  color: #333;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+/* Event List Styling */
+ul#adminEventList {
+  list-style-type: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+ul#adminEventList li {
+  background-color: #e9ecef;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ul#adminEventList li button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+ul#adminEventList li button:hover {
+  background-color: #c82333;
+}
+  </style>
+</head>
+<body>
+
+  <h1>Admin - Manage Weekly Agendum</h1>
+
+  <!-- Form to Add New Event -->
+  <form id="eventForm">
+    <label for="eventName">Event Name:</label>
+    <input type="text" id="eventName" name="eventName" required><br>
+
+    <label for="eventTime">Event Time:</label>
+    <input type="text" id="eventTime" name="eventTime" required><br>
+
+    <button type="submit">Add Event</button>
+  </form>
+
+  <h2>Existing Weekly Agendum</h2>
+  <ul id="adminEventList">
+    <!-- Events will be dynamically inserted here with delete options -->
+  </ul>
+
+  <script>
+  // Function to load events from localStorage and display them in the Admin page
+function loadAdminEvents() {
+  const events = JSON.parse(localStorage.getItem('weeklyEvents')) || [];
+  const adminEventList = document.querySelector('#adminEventList');
+  adminEventList.innerHTML = ''; // Clear existing content before loading
+
+  // Loop through events and create list items with delete buttons
+  events.forEach((event, index) => {
+    const li = document.createElement('li');
+    li.textContent = `${event.name}: ${event.time}`;
+    
+    // Create a delete button for each event
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.style.marginLeft = '10px';
+    deleteBtn.addEventListener('click', () => {
+      deleteEvent(index); // Call the delete function for this event
+    });
+
+    li.appendChild(deleteBtn);
+    adminEventList.appendChild(li);
+  });
+}
+
+// Function to delete an event from localStorage
+function deleteEvent(index) {
+  const events = JSON.parse(localStorage.getItem('weeklyEvents')) || [];
+
+  // Remove the selected event from the array
+  events.splice(index, 1);
+
+  // Update localStorage with the new array
+  localStorage.setItem('weeklyEvents', JSON.stringify(events));
+
+  // Reload the events on the Admin page
+  loadAdminEvents(); // Refresh the admin page display
+
+  alert('Event deleted successfully!');
+}
+
+// Function to handle form submission and add new events
+document.getElementById('eventForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const eventName = document.getElementById('eventName').value;
+  const eventTime = document.getElementById('eventTime').value;
+
+  // Save the event in localStorage
+  const events = JSON.parse(localStorage.getItem('weeklyEvents')) || [];
+  events.push({ name: eventName, time: eventTime });
+  localStorage.setItem('weeklyEvents', JSON.stringify(events));
+
+  alert('Event added successfully!');
+
+  // Clear form inputs
+  document.getElementById('eventName').value = '';
+  document.getElementById('eventTime').value = '';
+
+  // Reload events to show the new event
+  loadAdminEvents();
+});
+
+// Call the loadAdminEvents function when the admin page loads
+window.addEventListener('load', loadAdminEvents);
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin: Manage Notifications</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      height: 100px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .notification-preview {
+      background-color: #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .notification-list {
+      margin-top: 20px;
+    }
+    .notification-item {
+      background-color: #fafafa;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .edit-btn, .delete-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .delete-btn {
+      background-color: #dc3545;
+    }
+    .edit-btn:hover {
+      background-color: #0056b3;
+    }
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Manage Notifications</h1>
+
+  <div class="container">
+    <div class="input-group">
+      <label for="notificationText">Notification Text</label>
+      <textarea id="notificationText" placeholder="Enter notification text..."></textarea>
+    </div>
+    <div class="input-group">
+      <label for="notificationDuration">Notification Duration (seconds)</label>
+      <input type="number" id="notificationDuration" placeholder="Enter duration in seconds">
+    </div>
+    <button onclick="addNotification()">Set Notification</button>
+
+    <div class="notification-preview" id="notificationPreview" style="display:none;">
+      <!-- Preview the notification content here -->
+    </div>
+
+    <div class="notification-list" id="notificationList">
+      <!-- Notifications will appear here -->
+    </div>
+  </div>
+
+  <script>
+    // Load notifications from localStorage on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNotifications();
+    });
+
+    // Add a new notification
+    function addNotification() {
+      const text = document.getElementById('notificationText').value;
+      const duration = document.getElementById('notificationDuration').value;
+
+      if (!text || !duration) {
+        alert('Please enter both the notification text and duration.');
+        return;
+      }
+
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      notifications.push({ text, duration });
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+
+      loadNotifications();
+      clearInputs();
+    }
+
+    // Load notifications from localStorage and display them
+    function loadNotifications() {
+      const notificationList = document.getElementById('notificationList');
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      notificationList.innerHTML = '';
+
+      notifications.forEach((notification, index) => {
+        const notificationItem = document.createElement('div');
+        notificationItem.classList.add('notification-item');
+        notificationItem.innerHTML = `
+          <div><strong>${notification.text}</strong> (Duration: ${notification.duration} seconds)</div>
+          <div>
+            <button class="edit-btn" onclick="editNotification(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteNotification(${index})">Delete</button>
+          </div>
+        `;
+        notificationList.appendChild(notificationItem);
+      });
+
+      // Preview the last notification
+      if (notifications.length > 0) {
+        const lastNotification = notifications[notifications.length - 1];
+        document.getElementById('notificationPreview').style.display = 'block';
+        document.getElementById('notificationPreview').innerText = lastNotification.text;
+      }
+    }
+
+    // Edit a notification
+    function editNotification(index) {
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      const notification = notifications[index];
+      document.getElementById('notificationText').value = notification.text;
+      document.getElementById('notificationDuration').value = notification.duration;
+      notifications.splice(index, 1); // Remove the old notification before updating
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+      loadNotifications();
+    }
+
+    // Delete a notification
+    function deleteNotification(index) {
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      notifications.splice(index, 1);
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+      loadNotifications();
+    }
+
+    // Clear input fields after adding or editing a notification
+    function clearInputs() {
+      document.getElementById('notificationText').value = '';
+      document.getElementById('notificationDuration').value = '';
+    }
+  </script>
+
+</body>
+</html>

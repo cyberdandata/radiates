@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin: Manage Audio Sermons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .sermon-list {
+      margin-top: 20px;
+    }
+    .sermon-item {
+      background-color: #fafafa;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Manage Audio Sermons</h1>
+
+  <div class="container">
+    <div class="input-group">
+      <label for="sermonTitle">Sermon Title</label>
+      <input type="text" id="sermonTitle" placeholder="Enter sermon title">
+    </div>
+    <div class="input-group">
+      <label for="sermonAudio">Sermon Audio (MP3)</label>
+      <input type="file" id="sermonAudio" accept="audio/*">
+    </div>
+    <button onclick="addSermon()">Add Sermon</button>
+
+    <div class="sermon-list" id="sermonList">
+      <!-- Sermon items will appear here -->
+    </div>
+  </div>
+
+  <script>
+    // Load sermons from localStorage on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSermons();
+    });
+
+    // Add a new sermon to the list and localStorage
+    function addSermon() {
+      const title = document.getElementById('sermonTitle').value;
+      const audioFile = document.getElementById('sermonAudio').files[0];
+
+      if (!title || !audioFile) {
+        alert('Please provide both a title and an audio file.');
+        return;
+      }
+
+      // Convert the audio file to a data URL for storage
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const audioDataURL = event.target.result;
+
+        const sermons = JSON.parse(localStorage.getItem('sermons')) || [];
+        sermons.push({ title, audioDataURL });
+        localStorage.setItem('sermons', JSON.stringify(sermons));
+
+        loadSermons();
+        clearInputs();
+      };
+
+      reader.readAsDataURL(audioFile);
+    }
+
+    // Load sermons from localStorage and display them
+    function loadSermons() {
+      const sermonList = document.getElementById('sermonList');
+      const sermons = JSON.parse(localStorage.getItem('sermons')) || [];
+      sermonList.innerHTML = '';
+
+      sermons.forEach((sermon, index) => {
+        const sermonItem = document.createElement('div');
+        sermonItem.classList.add('sermon-item');
+        sermonItem.innerHTML = `
+          <div><strong>${sermon.title}</strong></div>
+          <button class="delete-btn" onclick="removeSermon(${index})">Delete</button>
+        `;
+        sermonList.appendChild(sermonItem);
+      });
+    }
+
+    // Remove a sermon from the list and localStorage
+    function removeSermon(index) {
+      const sermons = JSON.parse(localStorage.getItem('sermons')) || [];
+      sermons.splice(index, 1);
+      localStorage.setItem('sermons', JSON.stringify(sermons));
+      loadSermons();
+    }
+
+    // Clear input fields after adding a sermon
+    function clearInputs() {
+      document.getElementById('sermonTitle').value = '';
+      document.getElementById('sermonAudio').value = '';
+    }
+  </script>
+
+</body>
+</html>

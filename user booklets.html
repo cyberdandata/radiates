@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Marathon Books</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px;
+    }
+    .book-card {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .book-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .book-cover {
+      width: 100%;
+      height: auto;
+    }
+    .add-book-form {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .add-book-form input,
+    .add-book-form button {
+      padding: 10px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Available Marathon Books</h1>
+
+  <div class="add-book-form">
+    <input type="text" id="bookName" placeholder="Book Name" required>
+    <input type="text" id="bookPrice" placeholder="Book Price" required>
+    <input type="text" id="bookCover" placeholder="Cover Image URL" required>
+    <input type="text" id="bookPdf" placeholder="PDF URL" required>
+    <button id="addBookButton">Add Book</button>
+  </div>
+
+  <div class="book-grid" id="bookGrid">
+    <!-- Book items will be dynamically inserted here -->
+  </div>
+
+  <script>
+    // Load books from localStorage on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadBooks();
+      document.getElementById('addBookButton').addEventListener('click', addBook);
+    });
+
+    // Load books and display them in a grid
+    function loadBooks() {
+      const bookGrid = document.getElementById('bookGrid');
+      const books = JSON.parse(localStorage.getItem('books')) || [];
+      bookGrid.innerHTML = '';
+
+      books.forEach((book) => {
+        const bookCard = document.createElement('div');
+        bookCard.classList.add('book-card');
+        bookCard.innerHTML = `
+          <a href="${book.pdfUrl}" download="${book.name}.pdf">
+            <img src="${book.coverUrl}" alt="${book.name} cover" class="book-cover">
+          </a>
+          <a href="${book.pdfUrl}" download="${book.name}.pdf" class="book-title">${book.name}</a>
+          <div>Price: UGX ${book.price}</div>
+        `;
+        bookGrid.appendChild(bookCard);
+      });
+    }
+
+    // Add a new book to localStorage
+    function addBook() {
+      const name = document.getElementById('bookName').value;
+      const price = document.getElementById('bookPrice').value;
+      const coverUrl = document.getElementById('bookCover').value;
+      const pdfUrl = document.getElementById('bookPdf').value;
+
+      if (!name || !price || !coverUrl || !pdfUrl) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const newBook = { name, price, coverUrl, pdfUrl };
+
+      const books = JSON.parse(localStorage.getItem('books')) || [];
+      books.push(newBook);
+      localStorage.setItem('books', JSON.stringify(books));
+
+      document.getElementById('bookName').value = '';
+      document.getElementById('bookPrice').value = '';
+      document.getElementById('bookCover').value = '';
+      document.getElementById('bookPdf').value = '';
+
+      loadBooks();
+    }
+  </script>
+
+</body>
+</html>

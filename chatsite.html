@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Group</title>
+    <style>
+    
+    /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content input,
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
+/* Chat Container */
+#chatContainer {
+    display: none;
+    width: 400px;
+    max-height: 80vh;
+    background: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+    background: #3a1c71;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+}
+
+.message-display {
+    padding: 20px;
+    height: 400px;
+    overflow-y: scroll;
+    background-color: #fff;
+}
+
+.message-input {
+    display: flex;
+    padding: 10px;
+    background: #ffaf7b;
+}
+
+.message-input textarea {
+    width: 65%;
+    padding: 10px;
+    border-radius: 10px;
+    resize: none;
+}
+
+.message-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #3a1c71;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Message Styling */
+.message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message img {
+    width: 40px; /* Adjust image size */
+    height: 40px; /* Adjust image size */
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message-content {
+    background: #e9ecef;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+}
+
+.message-content audio {
+    margin-top: 5px;
+    width: 100%;
+}
+    </style><!-- Link to external CSS -->
+</head>
+<body>
+
+    <!-- Sign-Up Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <h2>Sign Up</h2>
+            <input type="text" id="username" placeholder="Enter your name" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter a password" required>
+            <input type="file" id="profilePhoto" accept="image/*" required>
+            <p id="signupErrorMessage" class="error-message"></p>
+            <button onclick="signUp()">Sign Up</button>
+            <button onclick="showLogin()">Already have an account? Log In</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Log In</h2>
+            <input type="text" id="loginUsername" placeholder="Enter your name" required>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            <p id="loginErrorMessage" class="error-message"></p>
+            <button onclick="login()">Log In</button>
+            <button onclick="showSignUp()">Don't have an account? Sign Up</button>
+        </div>
+    </div>
+
+    <!-- Chat Container -->
+    <div id="chatContainer">
+        <div class="header">
+            <h1>Chat Group</h1>
+        </div>
+        <div id="messageDisplay" class="message-display"></div>
+        <div class="message-input">
+            <textarea id="messageText" placeholder="Type a message..."></textarea>
+            <button onclick="startRecording()">🎤</button>
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script>
+    let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+// Show the login modal
+function showLogin() {
+    document.getElementById('signupModal').style.display = 'none';
+    document.getElementById('loginModal').style.display = 'flex';
+}
+
+// Show the sign-up modal
+function showSignUp() {
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('signupModal').style.display = 'flex';
+}
+
+// Sign up a new user
+function signUp() {
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const profilePhoto = document.getElementById('profilePhoto').files[0];
+    const errorMessageElement = document.getElementById('signupErrorMessage');
+
+    // Clear any previous error messages
+    errorMessageElement.textContent = '';
+
+    // Extract the username portion before '@'
+    const extractedUsername = email.split('@')[0];
+
+    // Validate password format (4 or 5 digits only)
+    if (!/^\d{4,5}$/.test(password)) {
+        errorMessageElement.textContent = "PIN must be 4 or 5 digits.";
+        return;
+    }
+
+    // Check for missing fields
+    if (!username || !email || !password || !profilePhoto) {
+        errorMessageElement.textContent = "Please fill all fields and upload a profile photo.";
+        return;
+    }
+
+    // Check if the extracted username is already in use
+    if (localStorage.getItem(extractedUsername)) {
+        errorMessageElement.textContent = "Account already exists. Please try a different email or log in.";
+        return;
+    }
+
+    // Handle profile photo and save user data
+    const reader = new FileReader();
+    reader.onload = function () {
+        const profileImage = reader.result;
+        localStorage.setItem(extractedUsername, JSON.stringify({
+            email: email,
+            password: password,
+            profileImage: profileImage
+        }));
+        sessionStorage.setItem('username', extractedUsername);
+
+        // Hide signup modal and show chat container
+        document.getElementById('signupModal').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'block';
+        loadCommunalMessages();
+    };
+    reader.readAsDataURL(profilePhoto);
+}
+
+// Login an existing user
+function login() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const userData = JSON.parse(localStorage.getItem(username));
+    const errorMessageElement = document.getElementById('loginErrorMessage');
+
+    // Clear any previous error messages
+    errorMessageElement.textContent = '';
+
+    if (userData && userData.password === password) {
+        sessionStorage.setItem('username', username);
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('chatContainer').style.display = 'block';
+        loadCommunalMessages();
+    } else {
+        errorMessageElement.textContent = "Incorrect information. Retry or make an account for yourself.";
+    }
+}
+
+// Load communal messages from localStorage
+function loadCommunalMessages() {
+    const communalMessages = JSON.parse(localStorage.getItem('communalMessages')) || [];
+    const messageDisplay = document.getElementById('messageDisplay');
+    messageDisplay.innerHTML = '';
+
+    communalMessages.forEach(message => {
+        displayMessage(message);
+    });
+}
+
+// Start or stop audio recording
+async function toggleRecording() {
+    if (isRecording) {
+        mediaRecorder.stop();
+        isRecording = false;
+    } else {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            sendMessage(null, audioUrl); // Send the audio after stopping the recording
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+    }
+}
+
+// Send a new message to the communal chat
+function sendMessage(textMessage, audioUrl) {
+    const messageText = textMessage || document.getElementById('messageText').value.trim();
+    const username = sessionStorage.getItem('username');
+
+    if (username && (messageText || audioUrl)) {
+        const userData = JSON.parse(localStorage.getItem(username));
+        const message = {
+            user: username,
+            image: userData.profileImage,
+            text: messageText,
+            audio: audioUrl,
+            time: new Date().toLocaleTimeString()
+        };
+
+        const communalMessages = JSON.parse(localStorage.getItem('communalMessages')) || [];
+        communalMessages.push(message);
+        localStorage.setItem('communalMessages', JSON.stringify(communalMessages));
+
+        displayMessage(message);
+        document.getElementById('messageText').value = '';
+    }
+}
+
+// Display a single message in the communal chat
+function displayMessage(message) {
+    const messageDisplay = document.getElementById('messageDisplay');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');
+    messageElement.innerHTML = `
+        <img src="${message.image}" alt="${message.user}'s profile picture">
+        <div class="message-content">
+            <strong>${message.user}</strong>: ${message.text} <br>
+            <small>${message.time}</small>
+            ${message.audio ? `<audio controls src="${message.audio}"></audio>` : ''}
+        </div>
+    `;
+    messageDisplay.appendChild(messageElement);
+    messageDisplay.scrollTop = messageDisplay.scrollHeight;
+}
+
+// Event listeners for recording button
+document.getElementById('audioButton').addEventListener('click', toggleRecording);
+       </script> <!-- Link to external JavaScript -->
+</body>
+</html>

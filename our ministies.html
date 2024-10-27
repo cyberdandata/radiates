@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Ministries</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .country-section {
+      margin-bottom: 30px;
+    }
+    .country-title {
+      font-size: 24px;
+      color: #007bff;
+      margin-top: 20px;
+    }
+    .city-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .church-card {
+      background-color: #fff;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .church-card:hover {
+      transform: scale(1.05);
+    }
+    .church-icon {
+      width: 100%;
+      max-width: 80px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+    }
+    .church-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Our Ministries</h1>
+
+  <!-- Uganda Section -->
+  <div class="country-section">
+    <div class="country-title">Uganda</div>
+    <div class="city-list">
+      <div class="church-card" onclick="promptChurch('Mukono, Uganda')">
+        <img src="church-icon.png" alt="Mukono Church" class="church-icon">
+        <div class="church-name">Mukono Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Kampala, Uganda')">
+        <img src="church-icon.png" alt="Kampala Church" class="church-icon">
+        <div class="church-name">Kampala Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Jinja, Uganda')">
+        <img src="church-icon.png" alt="Jinja Church" class="church-icon">
+        <div class="church-name">Jinja Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Arua, Uganda')">
+        <img src="church-icon.png" alt="Arua Church" class="church-icon">
+        <div class="church-name">Arua Church</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kenya Section -->
+  <div class="country-section">
+    <div class="country-title">Kenya</div>
+    <div class="city-list">
+      <div class="church-card" onclick="promptChurch('Mombasa, Kenya')">
+        <img src="church-icon.png" alt="Mombasa Church" class="church-icon">
+        <div class="church-name">Mombasa Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Nakuru, Kenya')">
+        <img src="church-icon.png" alt="Nakuru Church" class="church-icon">
+        <div class="church-name">Nakuru Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Nairobi, Kenya')">
+        <img src="church-icon.png" alt="Nairobi Church" class="church-icon">
+        <div class="church-name">Nairobi Church</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tanzania Section -->
+  <div class="country-section">
+    <div class="country-title">Tanzania</div>
+    <div class="city-list">
+      <div class="church-card" onclick="promptChurch('Dar es Salaam, Tanzania')">
+        <img src="church-icon.png" alt="Dar es Salaam Church" class="church-icon">
+        <div class="church-name">Dar es Salaam Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Arusha, Tanzania')">
+        <img src="church-icon.png" alt="Arusha Church" class="church-icon">
+        <div class="church-name">Arusha Church</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- South Africa Section -->
+  <div class="country-section">
+    <div class="country-title">South Africa</div>
+    <div class="city-list">
+      <div class="church-card" onclick="promptChurch('Cape Town, South Africa')">
+        <img src="church-icon.png" alt="Cape Town Church" class="church-icon">
+        <div class="church-name">Cape Town Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Johannesburg, South Africa')">
+        <img src="church-icon.png" alt="Johannesburg Church" class="church-icon">
+        <div class="church-name">Johannesburg Church</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USA Section -->
+  <div class="country-section">
+    <div class="country-title">United States</div>
+    <div class="city-list">
+      <div class="church-card" onclick="promptChurch('New York, USA')">
+        <img src="church-icon.png" alt="New York Church" class="church-icon">
+        <div class="church-name">New York Church</div>
+      </div>
+      <div class="church-card" onclick="promptChurch('Los Angeles, USA')">
+        <img src="church-icon.png" alt="Los Angeles Church" class="church-icon">
+        <div class="church-name">Los Angeles Church</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to prompt user and navigate to the church location on Google Maps
+    function promptChurch(location) {
+      const userConfirmed = confirm("Would you like to go and worship together with us?");
+      if (userConfirmed) {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+        window.open(mapsUrl, '_blank');
+      }
+    }
+  </script>
+
+</body>
+</html>

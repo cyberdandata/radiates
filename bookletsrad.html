@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Marathon Books</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  color:blue;
+  margin-bottom: 20px;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.book-card {
+  background-color:lightblue;
+  padding: 15px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: scale(1.05);
+}
+
+.book-cover {
+  width: 100%;
+  height: 90px; /* Adjusted height for a larger display */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.book-title {
+  font-size: 18px; /* Slightly larger for visibility */
+  color:black;
+  margin-top: 10px;
+  font-weight:bold:
+  
+}
+
+#priceContainer {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 999;
+  text-align: center;
+}
+
+#priceContainer p {
+  margin: 10px 0;
+}
+
+#priceContainer button {
+  background-color: #ff5733;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#priceContainer button:hover {
+  background-color: #e04d2d;
+}
+  </style>
+</head>
+<body>
+
+  <h1>Available Marathon Books</h1>
+
+  <!-- Book Grid -->
+  <div class="book-grid" id="bookGrid">
+    <!-- Book items will be dynamically inserted here -->
+  </div>
+
+  <!-- Price prompt -->
+  <div id="priceContainer">
+    <p id="bookPrice"></p>
+    <button onclick="runAirtelCode()">Buy Now</button>
+    <button onclick="closePriceContainer()">Cancel</button>
+  </div>
+
+  <script>
+// Load books from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadBooks();
+});
+
+// Load books from localStorage and display them
+function loadBooks() {
+  const bookGrid = document.getElementById('bookGrid');
+  const books = JSON.parse(localStorage.getItem('books')) || [];
+  bookGrid.innerHTML = '';
+
+  books.forEach((book) => {
+    const bookCard = document.createElement('div');
+    bookCard.classList.add('book-card');
+    bookCard.innerHTML = `
+      <img src="${book.coverDataURL}" alt="${book.name} cover" class="book-cover" style="width:100%; border-radius: 8px;">
+      <div class="book-title">${book.name}</div>
+      <div>Price: UGX ${book.price}</div>
+    `;
+    bookCard.addEventListener('click', () => showPricePrompt(book.price, book.pdfDataURL));
+    bookGrid.appendChild(bookCard);
+  });
+}
+
+// Show the price prompt for the selected book
+function showPricePrompt(price, pdfDataURL) {
+  document.getElementById('bookPrice').innerText = `This book costs UGX ${price}`;
+  document.getElementById('priceContainer').style.display = 'block';
+  window.selectedBook = pdfDataURL; // Store the selected book PDF for download
+  window.selectedPrice = price; // Store the price for Airtel USSD code
+}
+
+// Close the price prompt
+function closePriceContainer() {
+  document.getElementById('priceContainer').style.display = 'none';
+}
+
+// Simulate Airtel payment process and initiate download
+function runAirtelCode() {
+  const price = window.selectedPrice;
+  const airtelCode = `*185*1*1*0758295707*${price}#`;
+  alert(`Dialing Airtel code: ${airtelCode}`);
+  closePriceContainer();
+  window.location.href = `tel:${airtelCode}`;
+
+  // Simulate payment confirmation and start download
+  setTimeout(() => {
+    downloadBook(window.selectedBook);
+  }, 5000); // Adjust timeout as needed
+}
+
+// Start download of the selected book
+function downloadBook(pdfDataURL) {
+  const link = document.createElement('a');
+  link.href = pdfDataURL; // Use the data URL of the PDF file
+  link.download = 'downloaded_book.pdf'; // Trigger download
+  link.click();
+  alert(`Your book is downloading!`);
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booklet Management Site</title>
+  <style>
+    /* Add your CSS here */
+  </style>
+</head>
+<body>
+
+  <h1>Manage Available Books</h1>
+  <div class="container">
+    <div class="input-group">
+      <label for="bookName">Book Name</label>
+      <input type="text" id="bookName" placeholder="Enter book name">
+    </div>
+    <div class="input-group">
+      <label for="bookPrice">Book Price (UGX)</label>
+      <input type="number" id="bookPrice" placeholder="Enter book price">
+    </div>
+    <div class="input-group">
+      <label for="bookPDF">Book PDF</label>
+      <input type="file" id="bookPDF" accept="application/pdf">
+    </div>
+    <div class="input-group">
+      <label for="bookCover">Book Cover Image</label>
+      <input type="file" id="bookCover" accept="image/*">
+    </div>
+    <button onclick="addBook()">Add Book</button>
+
+    <div class="book-list" id="bookList">
+      <!-- Book items will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const SERVER_URL = 'http://localhost:3001/upload';
+
+    // Load books from localStorage on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadBooks();
+    });
+
+    // Add a new book
+    async function addBook() {
+      const name = document.getElementById('bookName').value;
+      const price = document.getElementById('bookPrice').value;
+      const pdfFile = document.getElementById('bookPDF').files[0];
+      const coverFile = document.getElementById('bookCover').files[0];
+
+      if (!name || !price || !pdfFile || !coverFile) {
+        alert('Please fill in all fields and select both files.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('pdfFile', pdfFile);
+      formData.append('coverFile', coverFile);
+
+      try {
+        // Upload the files to the server
+        const response = await fetch(SERVER_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Upload failed');
+
+        const result = await response.json();
+
+        // Save metadata to localStorage
+        const books = JSON.parse(localStorage.getItem('books')) || [];
+        books.push({
+          name,
+          price,
+          pdfUrl: result.pdfUrl,
+          coverUrl: result.coverUrl
+        });
+        localStorage.setItem('books', JSON.stringify(books));
+
+        loadBooks();
+        clearInputs();
+        alert('Book added successfully!');
+      } catch (error) {
+        console.error('Error uploading book:', error);
+        alert('There was an error adding the book.');
+      }
+    }
+
+    // Load books from localStorage and display them
+    function loadBooks() {
+      const bookList = document.getElementById('bookList');
+      const books = JSON.parse(localStorage.getItem('books')) || [];
+      bookList.innerHTML = '';
+
+      books.forEach((book) => {
+        const bookItem = document.createElement('div');
+        bookItem.classList.add('book-item');
+        bookItem.innerHTML = `
+          <div class="book-info">
+            <img src="${book.coverUrl}" alt="${book.name} cover" class="book-cover">
+            <div>
+              <strong>${book.name}</strong> - UGX ${book.price}
+            </div>
+          </div>
+        `;
+        bookList.appendChild(bookItem);
+      });
+    }
+
+    function clearInputs() {
+      document.getElementById('bookName').value = '';
+      document.getElementById('bookPrice').value = '';
+      document.getElementById('bookPDF').value = '';
+      document.getElementById('bookCover').value = '';
+    }
+  </script>
+
+</body>
+</html>
