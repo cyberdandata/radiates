@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Weekly Agendum</title>
+</head>
+<body>
+    <h2>Manage Weekly Agendum</h2>
+    <form id="agendumForm">
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" required>
+        <label for="eventTime">Event Time:</label>
+        <input type="text" id="eventTime" required>
+        <button type="submit">Add Event</button>
+    </form>
+
+    <script>
+        document.getElementById('agendumForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const eventName = document.getElementById('eventName').value;
+            const eventTime = document.getElementById('eventTime').value;
+
+            try {
+                const response = await fetch('http://192.168.100.6:8080/agendum', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: eventName, time: eventTime })
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                alert("Event saved successfully!");
+                document.getElementById('agendumForm').reset();
+            } catch (error) {
+                console.error("Failed to save event:", error);
+            }
+        });
+    </script>
+</body>
+</html>

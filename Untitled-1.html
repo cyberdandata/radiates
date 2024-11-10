@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Agendum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Styling for the agendum toggle button */
+        #weeklyAgendum {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        #weeklyAgendum:hover {
+            background-color: #0056b3;
+        }
+
+        /* Container for the upcoming events */
+        #weeklyAgendumContainer {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        /* Styling for the event list */
+        #agendumList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #agendumList li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        #agendumList li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Weekly Agendum Toggle Button -->
+    <ul>
+        <li id="weeklyAgendum">Weekly Agendum</li>
+    </ul>
+
+    <!-- Weekly Agendum Container -->
+    <div id="weeklyAgendumContainer" style="display: none;">
+        <h2>Upcoming Events</h2>
+        <ul id="agendumList"></ul>
+    </div>
+
+    <script>
+        // Function to fetch and display weekly agendum from the backend server
+        async function fetchWeeklyAgendum() {
+            try {
+                const response = await fetch('http://192.168.100.6:8080/agendum');
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                displayWeeklyAgendum(data.events);
+            } catch (error) {
+                console.error("Failed to fetch Weekly Agendum:", error);
+            }
+        }
+
+        // Function to render agendum data in the container
+        function displayWeeklyAgendum(events) {
+            const eventList = document.getElementById('agendumList');
+            eventList.innerHTML = '';  // Clear existing events
+
+            events.forEach(event => {
+                const li = document.createElement('li');
+                li.textContent = `${event.name}: ${event.time}`;
+                eventList.appendChild(li);
+            });
+        }
+
+        // Toggle Weekly Agendum container and fetch data on first load
+        document.getElementById('weeklyAgendum').addEventListener('click', () => {
+            const container = document.getElementById('weeklyAgendumContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            if (container.style.display === 'block') fetchWeeklyAgendum();
+        });
+    </script>
+</body>
+</html>

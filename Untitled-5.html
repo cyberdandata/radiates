@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Agendum</title>
+
+<!-- Left-hand Sliding Menu -->
+<div class="menu-left" id="menu-left"> 
+    <ul> 
+        <a href="our ministries.html"><li>Our Ministries</li></a><br> 
+        <li>Explore our projects</li><br> 
+        <a href="bookletsrad.html"><li>Get our books</li></a><br> 
+        <a href="sermons.html"><li>Get Sermons</li></a><br> 
+        <a href="https://galad.ro/apks/00/00/0H/FR/00000HFRGY/android-combibleofflinemultiplebibles-190.apk"> 
+            <li>Get A Bible</li></a><br> 
+        <li id="weeklyAgendum">Weekly Agendum</li><br> 
+        <li id="setDivinalDay">Set Divinal Day</li><br> 
+        <li id="signup"> Signup</li><br> 
+    </ul> 
+    <br> 
+</div>
+
+<!-- Weekly Agendum Container -->
+<div id="weeklyAgendumContainer" style="display: none;">
+    <h2>Upcoming Events</h2>
+    <ul id="agendumList"></ul>
+</div>
+
+<style>
+    /* Styling for the Weekly Agendum Container */
+    #weeklyAgendumContainer {
+        position: fixed;
+        top: 60px; /* Adjust based on your layout */
+        right: -350px; /* Start off-screen */
+        width: 330px;
+        height: 80%; /* Adjust height as needed */
+        background-color: rgba(0, 100, 250, 0.9); /* Background color */
+        color: white;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
+        transition: right 0.5s ease; /* Transition effect */
+    }
+
+    /* Show the container */
+    #weeklyAgendumContainer.show {
+        right: 0; /* Slide in */
+    }
+</style>
+
+<script>
+    // Function to fetch and display weekly agendum from the backend server
+    async function fetchWeeklyAgendum() {
+        try {
+            const response = await fetch('http://192.168.100.6:8080/agendum');
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            displayWeeklyAgendum(data.events);
+        } catch (error) {
+            console.error("Failed to fetch Weekly Agendum:", error);
+        }
+    }
+
+    // Function to render agendum data in the container
+    function displayWeeklyAgendum(events) {
+        const eventList = document.getElementById('agendumList');
+        eventList.innerHTML = '';  // Clear existing events
+
+        events.forEach(event => {
+            const li = document.createElement('li');
+            li.textContent = `${event.name}: ${event.time}`;
+            eventList.appendChild(li);
+        });
+    }
+
+    // Toggle Weekly Agendum container and fetch data on first load
+    document.getElementById('weeklyAgendum').addEventListener('click', () => {
+        const container = document.getElementById('weeklyAgendumContainer');
+        if (container.style.display === 'none') {
+            container.style.display = 'block'; // Show the container
+            setTimeout(() => {
+                container.classList.add('show'); // Add the show class to slide in
+                fetchWeeklyAgendum(); // Fetch events when shown
+            }, 10); // Small delay to allow the display to take effect
+        } else {
+            container.classList.remove('show'); // Remove the show class to slide out
+            setTimeout(() => {
+                container.style.display = 'none'; // Hide the container after sliding out
+            }, 500); // Match the transition duration
+        }
+    });
+</script>
