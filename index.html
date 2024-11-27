@@ -3,895 +3,196 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radiates</title>
-  <style>
-    /* General body styling */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color:rgba(200,250,100,0.1);
-      
-    }
-
-    /* Header animation */
-    @keyframes moveHeader {
-      0% { top: -10px; left: 10px; color:white; }
-      25% { top: -10px; left: 30px; color: yellow; }
-      100% { top: -10px; left: 59px; color: cyan; }
-    }
-
-    /* Header text */
-    h1 {
-      font-size: 36px;
-      position: fixed;
-      animation: moveHeader 8s linear infinite;
-      color: white;
-      padding: 10px;
-    }
-
-    /* Option buttons */
-    #option1, #option2{
-      height: 40px;
-      width: 40px;
-      position: fixed;
-      top: 20px;
-      cursor: pointer;
-      z-index: 10;
-      background-color: white;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Left Option (Windows-like icon) */
-    #option2 {
-      left: 10px;
-      background-color: rgba(200, 256, 0, 0.7);
-      background-image: url('download.png'); /* Replace with actual logo URL */
-      background-size: cover;
-    }
-
-    /* Right Option */
-    #option1 {
-      right: 10px;
-      background-color: white;
-      background-size: cover;
-      
-    }
-
-    /* Slide-out Menu (left) */
-    .menu-left {
-      position: fixed;
-      top: 60px;
-      left: -250px; /* Hidden initially */
-      width: 180px;
-      height: 100%;
-      background-color: #2c3e50;
-      color: white;
-      padding: 20px;
-      transition: left 0.5s;
-      z-index: 10;
-    }
-
-    /* Dropdown Menu (right) */
-    .menu-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      right: 2px;
-      width: 100px;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      border-radius: 10px;
-      padding: 10px;
-      z-index:10;
-    }
-
-    /* Menu Items */
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    ul li {
-      padding: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    ul li:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Full-screen container for Explorer */
-    #explorerContainer {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      z-index: 20;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #explorerContent {
-      text-align: center;
-      font-size: 24px;
-    }
-
-    /* Fixed Container */
-    #container {
-      position: fixed;
-      width: 440px;
-      height: 90px;
-      background-color: black;
-      top: 0;
-      left: 0;
-    }
-
-    .box {
-      position:fixed;
-      top: 231.9px;
-      width: 355px;
-      height: 38.4px;
-      background-color: black;
-      left: 3px;
-    }
-
-  .boxx {
-      position:fixed;
-      top:550px ;
-      width: 355px;
-      height: 97px;
-      background-color: black;
-      left: 3px;
-    }
-
-    .h20{
-     color:rgba(255,210,0,0.9);
-      top:547px;
-      position:fixed;
-      font-size:20px;
-      font-style:italic;
-      font-weight:bold;
-      left:3px;
-    }
-    /* Image Animation */
-    .image {
-      position: fixed;
-      top: 330px;
-      width: 400px;
-      height: 200px;
-      box-shadow: 10px 10px 5px grey;
-      animation: image 20s linear infinite;
-    }
-
-    @keyframes image {
-      0% { background-image: url(rad3.jpeg); }
-      30% { background-image: url(rad5.jpg); }
-      60% { background-image: url(rad1.jpg); }
-      100% { background-image: url(rad2.jpeg); }
-    }
-
-    /* Text */
-    .span {
-      position: fixed;
-      top: 30px;
-      color: black;
-      left: 320px;
-      z-index: 10;
-    }
-
-    p4 {
-      position: fixed;
-      font-size: 20px;
-      color: white;
-      right: 50px;
-      top: 300px;
-      background: linear-gradient(to right, blue, red);
-    }
-
-    p6 {
-      position: fixed;
-      font-size: 15px;
-      left: 20px;
-      top: 270px;
-      background-image: linear-gradient(to right, red, blue, green);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    p5 {
-      position: fixed;
-      font-size: 15px;
-      color: rgba(0, 0, 225, 0.5);
-      left: 150px;
-      top: 288px;
-    }
-
-    p7 {
-      position: fixed;
-      top: 520px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.9);
-      left: 210px;
-      z-index: 1;
-      
-    }
-
-    /* Google Map */
-    #map {
-      position:fixed;
-      top: 90px;
-      left:50%;
-      transform: translateX(-50%);
-      width:100%;
-      height:150px;
-      z-index:1;
-    }
-
-  .image1 img{
-    position:fixed;
-    top:240.0px;
-    width:36px;
-    height:30px;
-    left:80px;
-  }
-  .image2 img{
-    position:fixed;
-    top:240px;
-    width:36px;
-    height:30px;
-    left:240px;
-  }
-  .image3 img{
-    position:fixed;
-    top:240px;
-    width:36px;
-    height:30px;
-    left:135px;
-  
-  }
-  .image4 img{
-    position:fixed;
-    top:240px;
-    width:36px;
-    height:30px;
-    left:190px;
-  }
-  .image5 img{
-    position:fixed;
-    top:234px;
-    left:20px;
-    width:47px;
-    length:20px;
-    
-  }
-  .image6 img{
-    position:fixed;
-    top:240px;
-    width:37px;
-    length:20px;
-    left:290px;
-  }
-
-  }
-
-  .video-icon-container {
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px; /* Adjust height as needed */
-}
-.video-icon {
-
-    width: 30px;
-    height: 80px;
-    border: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position:absolute;
-  top: 570px;
-  z-index:1;
-  left:40px;
-      border:dashed yellow 2px;
-}
-
-.live {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 29px; /* Adjust height as needed */
-
-}
-.llive{
-    
-    width: 20px;
-    height: 20px;
-    border: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-  top: 640px;
-  right:-130px;
-  
-}
-
-menu-right,a{
-  color:white;
-  text-decoration: none;
-  
-}
-      #alarmContainer {
-      position: fixed;
-      bottom: -100%; /* Hidden initially */
-      left: 0;
-      right: 0;
-   /* Make it invisible initially */
-  
-      height: 57%;
-      padding: 20px;
-      box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
-      transition: bottom 1s ease-in-out;
-      z-index: 20;
-      text-align: center;
-        background: linear-gradient(to left,brown,yellow,brown);
-      }
-
-    /* Style for input fields and buttons */
-    #alarmContainer input[type="time"], #alarmContainer button {
-      font-size: 16px;
-      padding: 10px;
-      margin: 10px 0;
-      width: 80%;
-    }
-  
-  /* Weekly Agendum Container */
-
-  
-  /* Weekly Agendum Container */
-/* Weekly Agendum Container */
-#weeklyAgendumContainer {
-  position: fixed;
-  top: 0;
-  right: -350px; /* Start off-screen */
-  width: 330px;
-  height: 80%;
-  background-color: rgba(0, 100, 250, 0.9); /* Graphical background */
+  <title>Admin - Weekly Agendum</title>
+ <style>   
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #003366, #3399ff);
   color: white;
-  box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  transition: right 2s ease, opacity 2s ease;
-  z-index: 999;
-  opacity: 0; /* Make it invisible initially */
-  display: none; /* Container is not rendered at all */
-}
-
-#weeklyAgendumContainer h2 {
-  text-align: center;
-  text-shadow: 2px 2px 4px brown;
-  color:cyan;
- 
-}
-
-#weeklyAgendumContainer ul {
-  list-style-type: none;
+  margin: 0;
   padding: 0;
 }
 
-#weeklyAgendumContainer ul li {
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255, 255,255, 0.2);
-  transition: background-color 0.3s ease;
-  font-weight:bold;
-  font-style:italic;
-  font-size:23px;
-  color:yellow;
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-#weeklyAgendumContainer ul li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-  
-  
-  
-  #notificationBar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ffc107;
-  color: #333;
-  font-weight: bold;
-  padding: 15px;
+h1, h2 {
   text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  z-index: 1000;
-  display: none; /* Initially hidden */
+  text-shadow: 2px 2px 5px yellow;
 }
 
-.sliding-text {
-  display: inline-block;
-  animation: slide-left 10s linear infinite;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-@keyframes slide-left {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+form label {
+  font-size: 18px;
 }
-  </style>
+
+form input, button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  background: yellow;
+  color: black;
+  cursor: pointer;
+}
+
+button:hover {
+  background: orange;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background: #333;
+}
+
+table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+table td button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  background: red;
+  color: white;
+  cursor: pointer;
+}
+
+table td button:hover {
+  background: darkred;
+}
+
+
+</style>
 </head>
 <body>
+  <div class="container">
+    <h1>Upload Weekly Agendum</h1>
+    <form id="agendaForm">
+      <label for="eventName">Event Name:</label>
+      <input type="text" id="eventName" name="eventName" required>
+      
+      <label for="eventTime">Event Time:</label>
+      <input type="text" id="eventTime" name="eventTime" required>
+      
+      <button type="submit">Upload Event</button>
+    </form>
 
-  <p6>We Are The Radiates Ignited By The Holy Spirit</p6>
-  <p5>° &nbsp ° &nbsp °</p5>
-  <p4>FAITH. FELLOWSHIP. AND FUN</p4>
-  <p7>&copy; Developer: CyberDanData</p7>
-
-  <!-- Left and Right Option Buttons -->
-  <div id="option2" onclick="toggleLeftMenu()"></div>
-  <div id="option1" onclick="toggleRightMenu()"></div>
-  <div id="option3" onclick="toggleexplorerMenu"></div>
-  <div class="span"><span>|&nbsp|&nbsp|</span></div>
-
-  <!-- Left-hand Sliding Menu -->
-  
-    <!-- Left-hand Sliding Menu (no changes) -->
-  <div class="menu-left" id="menu-left">
-    <ul>
-      <a href="our ministies.html" ><li>Our Ministries</li></a><br>
-      <li>Explore our projects</li><br>
-      <a href="bookletsrad.html"><li>Get our books</li></a><br>
-      <a href="sermons.html"><li>Get Sermons</li>
-        </a><br>
-        
-      <a href="https://galad.ro/apks/00/00/0H/FR/00000HFRGY/android-combibleofflinemultiplebibles-190.apk">
-        <li>Get A Bible</li></a> <br> <ul>
-  <li id="weeklyAgendum">Weekly Agendum</li>
-</ul> <br>
-      <!-- Assigning a unique id to "Set Divinal Day" -->
-      <li id="setDivinalDay">Set Divinal Day</li><br>
-      <li id="signup"> Signup</li><br>
-    </ul>
-    <br>
+    <h2>Current Weekly Agendum</h2>
+    <table id="agendaTable">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Event Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Agenda items will be dynamically loaded here -->
+      </tbody>
+    </table>
   </div>
 
-  <!-- Alarm Sliding Container -->
-  <div id="alarmContainer">
-    <h2>Set Divinal Alarms</h2>
-    <label for="prayerAlarm">Prayer Alarm:</label>
-    <input type="time" id="prayerAlarm"><br><br>
-
-    <label for="bibleAlarm">Bible Reading Alarm:</label>
-    <input type="time" id="bibleAlarm"><br><br>
-
-    <label for="holyGhostAlarm">Jazz with Holy Ghost Alarm:</label>
-    <input type="time" id="holyGhostAlarm"><br><br>
-
-    <button onclick="saveAlarms()">Save Alarms</button>
-  </div>
-  <!-- Right-hand Dropdown Menu -->
-  <div class="menu-right" id="menu-right" >
-    <ul>
-      <a href="Join family.html"><li>Join.Family</li></a>
-<a href="tel:+256752098554"><li>Contact.us</li></a>
-      <li onclick="showExplorer()">Explorer</li>
-    </ul>
-   </div>
-
-  <!-- Full-Screen Explorer Container -->
-  <div id="explorerContainer" onclick="hideExplorer()">
-    <div id="explorerContent">
-      <h2>Organization Details</h2>
-      <p>Welcome to the Radiates Organization.</div>
-  </div>
-
-  <div id="container"></div>
-  <!-- Animated Header -->
-  <h1>R.A.D.I.A.T.E.S</h1>
-  <div class="box"></div>
-  <div class="image"></div>
-  <div class="map.c"></div>
-  <!-- Google Map -->
-  <div id="map"></div>
-
- <!-- Twitter -->
-<a href="https://twitter.com" target="_blank">
-  <div class="image1"><img src="twitter.png" alt="Twitter"></div>
-</a>
-
-<!-- WhatsApp -->
-<a href="https://chat.whatsapp.com/GaUU871tsjkF1fxMiTCQhD" target="_blank">
-  <div class="image2"><img src="whatsapp.png" alt="WhatsApp"></div>
-</a>
-
-<!-- Telegram -->
-<a href="https://telegram.org" target="_blank">
-  <div class="image3"><img src="telegram.jpeg" alt="Telegram"></div>
-</a>
-
-<!-- TikTok -->
-<a href="tiktok://user/profile/@radiates4 id="tiktok-link"" id="tiktok-link" >
-  <div class="image4"><img src="tik.png" alt="Open TikTok"></div>
-</a>
-
-<!-- Instagram -->
-<a href="https://www.instagram.com" target="_blank">
-  <div class="image5"><img src="inst.jpeg" alt="Instagram"></div>
-</a>
-
-<!-- YouTube -->
-<a href="https://m.youtube.com/@TheRadiatesUccMukono" target="_blank">
-  <div class="image6"><img src="you.png" alt="YouTube"></div>
-</a>
-	</div>
-  
-  <div class="video-icon-container">
-    <div class="video-icon">
-        <video id="video-stream" width="100" height="100" autoplay muted loop>
-            <source src="sound.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-</div>
-<!-- Telegram 
-<div class="live">
-    <div class="llive">
-        <video id="video-stream" width="100" height="100" autoplay muted loop>
-            <source src="live.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-  -->
-
-  <div class="boxx"></div>
-  <div class="h20"> <h20>Listen.Live</h20></div>
-  
-  <ul>
-  <li id="weeklyAgendum">Weekly Agendum</li>
-</ul>
-
-<!-- Weekly Agendum Container -->
-<div id="weeklyAgendumContainer">
-  <h2>Upcoming Events at Church Ministry</h2>
-  <ul>
-    <li>Sunday Service: 9 AM - 12 PM</li>
-    <li>Bible Study: Wednesday 6 PM</li>
-    <li>Community Outreach: Saturday 3 PM</li>
-    <!-- More events -->
-  </ul>
-</div>
-  <div class="eee"></div>
-  
-  <div id="notificationBar"></div>
   <script>
-  
-  
-function redirectToStream() {
-    const redirect = document.getElementById('video-stream');
-    // Replace with your live audio stream URL
-    window.location.href = "https://www.youtube.com";
-}
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('agendaForm');
+  const tableBody = document.querySelector('#agendaTable tbody');
 
-  
-// Function to toggle the left-hand sliding menu
-function toggleLeftMenu() {
-  const menuLeft = document.getElementById('menu-left');
-  if (menuLeft.style.left === '0px') {
-    menuLeft.style.left = '-250px';  // Hide menu
-  } else {
-    menuLeft.style.left = '0px';  // Show menu
+  // Add new event
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const eventName = document.getElementById('eventName').value;
+    const eventTime = document.getElementById('eventTime').value;
+
+    fetch('events.php?action=upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ name: eventName, time: eventTime })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Event added successfully!');
+          loadEvents();
+          form.reset(); // Clear form fields
+        } else {
+          alert('Error adding event!');
+        }
+      })
+      .catch(err => console.error('Error:', err));
+  });
+
+  // Load events
+  function loadEvents() {
+    fetch('events.php?action=load')
+      .then(response => response.json())
+      .then(events => {
+        tableBody.innerHTML = ''; // Clear existing rows
+        events.forEach(event => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${event.name}</td>
+            <td>${event.time}</td>
+            <td>
+              <button onclick="deleteEvent('${event.id}')">Delete</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(err => console.error('Error loading events:', err));
   }
-}
 
-// Function to toggle the right-hand dropdown menu
-function toggleRightMenu() {
-  const menuRight = document.getElementById('menu-right');
-  if (menuRight.style.display === 'none' || menuRight.style.display === '') {
-    menuRight.style.display = 'block';
-  } else {
-    menuRight.style.display = 'none';
-  }
-}
-
-// Function to show the full-screen container when 'Explorer' is clicked
-function showExplorerContainer() {
-  const explorerContainer = document.createElement('div');
-  explorerContainer.id = 'explorer-container';
-  explorerContainer.style.position = 'fixed';
-  explorerContainer.style.top = '0';
-  explorerContainer.style.left = '0';
-  explorerContainer.style.width = '100%';
-  explorerContainer.style.height = '100%';
-  explorerContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-  explorerContainer.style.color = 'white';
-  explorerContainer.style.zIndex = '9999';
-  explorerContainer.style.display = 'flex';
-  explorerContainer.style.flexDirection = 'column';
-  explorerContainer.style.justifyContent = 'center';
-  explorerContainer.style.alignItems = 'center';
-  explorerContainer.innerHTML = `
-    <h2>CHURCH DETAILS</h2>
-    <p>Welcome to R.A.D.I.A.T.E.S.</p> 
-  <p>Our MISSION</p>&nbsp &nbsp
-  <br>
-  <br>
-  <p>CORNER VALUES</p>
-  <br>
-  <br>
-  <p>ABJECTIVES</p>
-  <br>
-  <p>You are the light of the world. A city set on a hill cannot be hidden.</p>
-  <p>Matthew 5:14 (AMP)</p>
-  
-  <h3>YOU BEING/VISITING THIS SITE IS NOT A MISTAKE BUT ITS THE WILL OF HOLYGOST</h3>
-  <p>Therefore we a gladly To have you,fill at church </p>
-  <button id="close-explorer">Close</button>
-  `;
-
-  document.body.appendChild(explorerContainer);
-
-  // Close the explorer container when clicking outside or the close button
-  explorerContainer.addEventListener('click', function(event) {
-    if (event.target.id === 'explorer-container' || event.target.id === 'close-explorer') {
-      document.body.removeChild(explorerContainer);
+  // Delete event
+  window.deleteEvent = function (id) {
+    if (confirm('Are you sure you want to delete this event?')) {
+      fetch('events.php?action=delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ id })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Event deleted successfully!');
+            loadEvents();
+          } else {
+            alert('Error deleting event!');
+          }
+        })
+        .catch(err => console.error('Error:', err));
     }
-  });
-}
+  };
 
-// Add event listener for the Explorer list item
-document.addEventListener('DOMContentLoaded', function() {
-  const explorerItem = document.querySelector('#menu-right ul li:nth-child(3)'); // Target the Explorer li element
-  explorerItem.addEventListener('click', showExplorerContainer);
+  // Initial load of events
+  loadEvents();
 });
 
-// Initialize Google Map
-// Initialize Google Map
-function initMap() {
-  var uccMukono = { lat: 0.353144, lng: 32.755667 }; // Coordinates for UCC Mukono
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
-    center: uccMukono
-  });
-  var marker = new google.maps.Marker({
-    position: uccMukono,
-    map: map
-  });
-}
-
-// Load the Google Maps script asynchronously
-document.addEventListener('DOMContentLoaded', function() {
-  var script = document.createElement('script');
-  script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBWU0hVnzyEUzxNxs2bGQI4hLmOTd_gfkI&callback=initMap'; // Inserted your API key
-
-  script.async = true;
-  script.defer = true;
-  document.body.appendChild(script);
-});
- 
-  
-  // Function to show the alarm container
-function showAlarmContainer() {
-  const alarmContainer = document.getElementById('alarmContainer');
-  alarmContainer.style.bottom = '0'; // Slide up to visible
-
-  // Add the event listener to detect clicks outside the alarm container
-  document.addEventListener('click', outsideClickListener);
-}
-
-// Function to hide the alarm container
-function hideAlarmContainer() {
-  const alarmContainer = document.getElementById('alarmContainer');
-  alarmContainer.style.bottom = '-50%'; // Slide down to hide
-
-  // Remove the outside click listener when container is hidden
-  document.removeEventListener('click', outsideClickListener);
-}
-
-// Function to save alarms and set notifications
-function saveAlarms() {
-  const prayerTime = document.getElementById('prayerAlarm').value;
-  const bibleTime = document.getElementById('bibleAlarm').value;
-  const holyGhostTime = document.getElementById('holyGhostAlarm').value;
-
-  // Save alarm times in localStorage
-  localStorage.setItem('prayerAlarm', prayerTime);
-  localStorage.setItem('bibleAlarm', bibleTime);
-  localStorage.setItem('holyGhostAlarm', holyGhostTime);
-
-  // Show confirmation and hide the container
-  alert('Alarms saved successfully!');
-  hideAlarmContainer();
-
-  // Set alarms
-  setAlarmNotification('prayerAlarm', prayerTime, 'Time to pray!');
-  setAlarmNotification('bibleAlarm', bibleTime, 'Time to read the Bible!');
-  setAlarmNotification('holyGhostAlarm', holyGhostTime, 'Time to jazz with the Holy Ghost!');
-}
-
-// Function to set alarms with sound
-function setAlarmNotification(alarmKey, alarmTime, message) {
-  const alarmDate = new Date();
-  const [hours, minutes] = alarmTime.split(':');
-  alarmDate.setHours(hours, minutes, 0, 0);
-
-  const now = new Date();
-  const timeUntilAlarm = alarmDate.getTime() - now.getTime();
-
-  if (timeUntilAlarm > 0) {
-    setTimeout(() => {
-      alert(message); // Display message
-      playAlarmSound(); // Play the alarm sound
-    }, timeUntilAlarm);
-  }
-}
-
-// Function to play the alarm sound with user interaction required for autoplay
-function playAlarmSound() {
-  const audio = new Audio('/storage/emulated/0/alpha/radiateswork/ring.mp3'); // Path to your alarm sound file
-  
-  // Ensure the sound plays only after user interaction (like clicking a button)
-  const playButton = document.createElement('button');
-  playButton.textContent = 'Play Alarm Sound';
-  document.body.appendChild(playButton);
-
-  playButton.addEventListener('click', () => {
-    audio.play();
-    playButton.remove(); // Remove the button after playing
-  });
-
-  alert("Alarm triggered! Tap 'Play Alarm Sound' to hear the alarm.");
-}
-
-// Function to load alarms from localStorage when the page loads
-function loadAlarms() {
-  const prayerTime = localStorage.getItem('prayerAlarm');
-  const bibleTime = localStorage.getItem('bibleAlarm');
-  const holyGhostTime = localStorage.getItem('holyGhostAlarm');
-
-  // If alarm times are saved, load them and set alarms
-  if (prayerTime) {
-    document.getElementById('prayerAlarm').value = prayerTime;
-    setAlarmNotification('prayerAlarm', prayerTime, 'Time to pray!');
-  }
-  if (bibleTime) {
-    document.getElementById('bibleAlarm').value = bibleTime;
-    setAlarmNotification('bibleAlarm', bibleTime, 'Time to read the Bible!');
-  }
-  if (holyGhostTime) {
-    document.getElementById('holyGhostAlarm').value = holyGhostTime;
-    setAlarmNotification('holyGhostAlarm', holyGhostTime, 'Time to jazz with the Holy Ghost!');
-  }
-}
-
-// Function to detect clicks outside the alarm container
-function outsideClickListener(event) {
-  const alarmContainer = document.getElementById('alarmContainer');
-  if (!alarmContainer.contains(event.target)) {
-    hideAlarmContainer(); // Slide down if clicked outside
-  }
-}
-
-// Event listener to show the alarm container when "Set Divinal Day" is clicked
-document.getElementById('setDivinalDay').addEventListener('click', (event) => {
-  event.stopPropagation(); // Prevent the event from triggering outside click listener
-  showAlarmContainer();
-});
-
-// Prevent click inside the container from triggering the outside click listener
-document.getElementById('alarmContainer').addEventListener('click', (event) => {
-  event.stopPropagation(); // Prevents container click from closing it
-});
-  
-  
-  // Weekly Agendum toggle function
-const weeklyAgendum = document.getElementById('weeklyAgendum');
-const weeklyAgendumContainer = document.getElementById('weeklyAgendumContainer');
-
-// Toggle Weekly Agendum container on click
-weeklyAgendum.addEventListener('click', function() {
-  if (weeklyAgendumContainer.style.display === 'block') {
-    // Hide container by sliding out and then making it invisible
-    weeklyAgendumContainer.style.right = '-350px'; // Move off-screen
-    weeklyAgendumContainer.style.opacity = '0';    // Fade out
-    setTimeout(() => {
-      weeklyAgendumContainer.style.display = 'none'; // Fully hide
-    }, 500); // Delay to match the transition duration
-  } else {
-    // Show container by making it visible and sliding in
-    weeklyAgendumContainer.style.display = 'block'; // Make it visible
-    setTimeout(() => {
-      weeklyAgendumContainer.style.right = '0px'; // Slide in
-      weeklyAgendumContainer.style.opacity = '1'; // Fade in
-    }, 10); // Small delay to trigger transition
-  }
-});
-
-// Hide the Weekly Agendum container on double-tap
-weeklyAgendumContainer.addEventListener('dblclick', function() {
-  weeklyAgendumContainer.style.right = '-350px'; // Move off-screen
-  weeklyAgendumContainer.style.opacity = '0';    // Fade out
-  setTimeout(() => {
-    weeklyAgendumContainer.style.display = 'none'; // Fully hide
-  }, 500); // Delay to match the transition duration
-});
-
-// Load and display events from localStorage
-window.addEventListener('load', function() {
-  const events = JSON.parse(localStorage.getItem('weeklyEvents')) || [];
-  const eventList = document.querySelector('#weeklyAgendumContainer ul');
-  eventList.innerHTML = ''; // Clear existing content in case of reload
-  events.forEach(event => {
-    const li = document.createElement('li');
-    li.textContent = `${event.name}: ${event.time}`;
-    eventList.appendChild(li);
-  });
-});
-
-// Admin page function (to be added on the admin page to save events)
-/*
-document.getElementById('eventForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const eventName = document.getElementById('eventName').value;
-  const eventTime = document.getElementById('eventTime').value;
-
-  // Save the event in localStorage
-  const events = JSON.parse(localStorage.getItem('weeklyEvents')) || [];
-  events.push({ name: eventName, time: eventTime });
-  localStorage.setItem('weeklyEvents', JSON.stringify(events));
-
-  alert('Event posted successfully!');
-});
-*/
-
-  
-  // Load the notification from localStorage on page load
-document.addEventListener('DOMContentLoaded', function() {
-  displayNotification();
-});
-
-// Function to display notification
-function displayNotification() {
-  const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-  if (notifications.length === 0) return;
-
-  const notification = notifications[notifications.length - 1];
-  const notificationElement = document.getElementById('notificationBar');
-  notificationElement.innerText = notification.text;
-  notificationElement.style.display = 'block';
-
-  // Check if the notification is long or short
-  if (notification.text.length > 50) {
-    // For long notifications, apply sliding effect
-    notificationElement.classList.add('sliding-text');
-  } else {
-    // For short notifications, remove sliding effect
-    notificationElement.classList.remove('sliding-text');
-  }
-
-  // Set the notification to disappear and reappear based on the admin-set duration
-  const duration = parseInt(notification.duration) * 1000;
-  setTimeout(function() {
-    notificationElement.style.display = 'none';
-    setTimeout(displayNotification, duration); // Reappear after the duration
-  }, 10000); // Display notification for 10 seconds before hiding it
-}
-  
-  
-</script>
+  </script>
+</body>
+</html>
